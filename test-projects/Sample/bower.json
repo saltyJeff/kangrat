@@ -1,0 +1,13 @@
+{
+  "name": "Sample",
+  "authors": [
+    "supermiu <jeffersonlee2000@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "dependencies": {
+    "google-youtube": "GoogleWebComponents/google-youtube#^1.2.1"
+  }
+}

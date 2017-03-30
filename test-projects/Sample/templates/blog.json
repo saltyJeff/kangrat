@@ -1,0 +1,20 @@
+[
+    {
+        "elementTag": "input",
+        "bindings": [
+            {
+                "property": "value",
+                "value": "title"
+            }
+        ]
+    },
+    {
+        "elementTag": "google-youtube",
+        "bindings": [
+            {
+                "property": "videoId",
+                "value": "videoId"
+            }
+        ]
+    }
+]

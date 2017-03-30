@@ -1,0 +1,10 @@
+[
+  {
+      "name": "title",
+      "type": "string"
+  },
+  {
+    "name": "videoId",
+    "type": "string"
+  }
+]
