@@ -30,9 +30,10 @@ async function run (from: string, to: string, dangerous: boolean = false) {
 	await build.buildAll(dangerous);
 };
 run(path.resolve(process.cwd(), program.from), path.resolve(process.cwd(), program.to), program.dangerous);
+
 //this is in case anyone wants the classes
-module.exports = {
-	SaveFile: SaveFile,
-	SafetyCheck: SafetyCheck,
-	build: run
+export {
+	SaveFile,
+	SafetyCheck,
+	run as build
 }
