@@ -2,12 +2,12 @@ import * as fs from 'fs-promise';
 import * as path from 'path';
 import {MetaData, Field, PageElement, Binding, ElementManifest} from './FileTypes';
 export class SaveFile {
-	public metadata: MetaData;
-	private schemas: Map<string, Field[]> = new Map<string, Field[]>();
-	private templates: Map<string, PageElement[]> = new Map<string, PageElement[]>();
-	private elementManifests: Map<string, ElementManifest> = new Map<string, ElementManifest>();
-	private loadPath: string;
-	private basePage: string = null;
+	protected metadata: MetaData;
+	protected schemas: Map<string, Field[]> = new Map<string, Field[]>();
+	protected templates: Map<string, PageElement[]> = new Map<string, PageElement[]>();
+	protected elementManifests: Map<string, ElementManifest> = new Map<string, ElementManifest>();
+	protected loadPath: string;
+	protected basePage: string = null;
 	public get dataPath () {
 		return path.resolve(this.loadPath, 'data');
 	}

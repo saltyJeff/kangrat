@@ -1,11 +1,11 @@
 import { MetaData, Field, PageElement, ElementManifest } from './FileTypes';
 export declare class SaveFile {
-    metadata: MetaData;
-    private schemas;
-    private templates;
-    private elementManifests;
-    private loadPath;
-    private basePage;
+    protected metadata: MetaData;
+    protected schemas: Map<string, Field[]>;
+    protected templates: Map<string, PageElement[]>;
+    protected elementManifests: Map<string, ElementManifest>;
+    protected loadPath: string;
+    protected basePage: string;
     readonly dataPath: string;
     readonly savePath: string;
     readFrom(dirname: string): Promise<void>;
