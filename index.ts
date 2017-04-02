@@ -2,6 +2,7 @@
 import {SaveFile} from './SaveFile';
 import {NBBuild} from './NBBuild';
 import {SafetyCheck} from './SafetyCheck';
+import * as FileTypes from './FileTypes';
 import * as path from 'path';
 import * as program from 'commander';
 
@@ -35,5 +36,6 @@ run(path.resolve(process.cwd(), program.from), path.resolve(process.cwd(), progr
 export {
 	SaveFile,
 	SafetyCheck,
-	run as build
+	run as build,
+	FileTypes as FileTypes
 }
