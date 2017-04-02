@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 import {SaveFile} from './SaveFile';
 import {NBBuild} from './NBBuild';
+import {SafetyCheck} from './SafetyCheck';
 import * as path from 'path';
 import * as program from 'commander';
 
@@ -22,9 +23,16 @@ if(!program.to) {
 	console.log('switch -t not found, run kangrat --help for help');
 	process.exit(1);
 }
-(async () => {
+async function run (from: string, to: string, dangerous: boolean = false) {
 	let save: SaveFile = new SaveFile();
-	await save.readFrom(path.resolve(process.cwd(), program.from));
-	let build: NBBuild = new NBBuild(save, path.resolve(process.cwd(), program.to));
-	await build.buildAll(!program.dangerous);
-})();
+	await save.readFrom(from);
+	let build: NBBuild = new NBBuild(save, to);
+	await build.buildAll(dangerous);
+};
+run(path.resolve(process.cwd(), program.from), path.resolve(process.cwd(), program.to), program.dangerous);
+//this is in case anyone wants the classes
+module.exports = {
+	SaveFile: SaveFile,
+	SafetyCheck: SafetyCheck,
+	build: run
+}
