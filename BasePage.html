@@ -30,7 +30,7 @@
             function nbCallback (status, res, req) {
                 if(Math.floor(status/100) === 2) {
                     var data = JSON.parse(res);
-                    [/*NODEBLOG_BINDINGS*/].forEach(function (command) {
+                    [/*KANGRAT_BINDINGS*/].forEach(function (command) {
                         document.getElementById(command.elemId)[command.property] = data[command.value];
                     });
                 }
@@ -71,11 +71,11 @@
                 max-width: 100%;
             }
         </style>
-        <!--NODEBLOG_IMPORT-->
+        <!--KANGRAT_IMPORT-->
     </head>
     <body>
         <div class="nbmain">
-            <!--NODEBLOG_ROOT-->
+            <!--KANGRAT_ROOT-->
         </div>
     </body>
 </html>

@@ -10,9 +10,9 @@ interface BindingCommand {
     property: string;
 }
 //consts that get replaced (site cannot have these)
-const NODEBLOG_ROOT = '<!--NODEBLOG_ROOT-->';
-const NODEBLOG_BINDINGS = '[/*NODEBLOG_BINDINGS*/]';
-const NODEBLOG_IMPORT = '<!--NODEBLOG_IMPORT-->';
+const NODEBLOG_ROOT = '<!--KANGRAT_ROOT-->';
+const NODEBLOG_BINDINGS = '[/*KANGRAT_BINDINGS*/]';
+const NODEBLOG_IMPORT = '<!--KANGRAT_IMPORT-->';
 const divider = '-'.repeat(48);
 export class NBBuild {
     private save: SaveFile;
