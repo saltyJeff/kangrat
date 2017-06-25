@@ -19,15 +19,15 @@
                 return(false);
             }
             window.addEventListener('WebComponentsReady', function(e) {
-                var toFetch = getQueryVariable('NBData');
+                var toFetch = getQueryVariable('KangratData');
                 if(toFetch) {
-                    nanoajax.ajax({url: toFetch, method: 'GET'}, nbCallback)
+                    nanoajax.ajax({url: toFetch, method: 'GET'}, kangratCallback)
                 }
                 else {
                     alert('no data found in URL');
                 }
             });
-            function nbCallback (status, res, req) {
+            function kangratCallback (status, res, req) {
                 if(Math.floor(status/100) === 2) {
                     var data = JSON.parse(res);
                     [{"value":"title","property":"value","elemId":"nb0"},{"value":"videoId","property":"videoId","elemId":"nb1"}].forEach(function (command) {
@@ -52,22 +52,22 @@
                 padding: 20px;
                 background-color: #e2dede;
             }
-            div.nbmain {
+            div.kangratmain {
                 width: 100%;
                 max-width: 960px;
                 background-color: #999191;
             }
-            div.nbelement {
+            div.kangratelement {
                 width: 100%;
                 display: flex;
                 align-content: center;
                 justify-content: center;
                 margin-bottom: 20px;
             }
-            div.nbelement:first-child {
+            div.kangratelement:first-child {
                 margin-top: 20px;
             }
-            div.nbelement > * {
+            div.kangratelement > * {
                 max-width: 100%;
             }
         </style>
@@ -75,9 +75,9 @@
 
     </head>
     <body>
-        <div class="nbmain">
-            <div class="nbelement"><input id="nb0" /></div>
-<div class="nbelement"><google-youtube id="nb1" /></div>
+        <div class="kangratmain">
+            <div class="kangratelement"><input id="nb0" /></div>
+<div class="kangratelement"><google-youtube id="nb1" /></div>
 
         </div>
     </body>

@@ -4,7 +4,7 @@
   "description": "A small and fast static site generator for nodejs",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "kangrat -f test-projects/Sample -t test-projects/SampleBuild"
   },
   "repository": {
     "type": "git",

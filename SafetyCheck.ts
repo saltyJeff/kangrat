@@ -21,7 +21,7 @@ export class SafetyCheck {
         let template = await this.save.getTemplate(schemaName);
         //check loop
         for(let pgElement of template) {
-            if(pgElement.elementTag.indexOf('-') == -1) { //its built in so i have no idea whats up
+            if(pgElement.elementTag.indexOf('-') == -1) { //no hyphen = built in component so i have no idea whats up
                 continue;
             }
             let element = elements.get(pgElement.elementTag);

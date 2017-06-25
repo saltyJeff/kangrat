@@ -14,7 +14,7 @@ const NODEBLOG_ROOT = '<!--KANGRAT_ROOT-->';
 const NODEBLOG_BINDINGS = '[/*KANGRAT_BINDINGS*/]';
 const NODEBLOG_IMPORT = '<!--KANGRAT_IMPORT-->';
 const divider = '-'.repeat(48);
-export class NBBuild {
+export class KangratBuild {
     private save: SaveFile;
     private outputDir: string;
     /**
@@ -44,9 +44,8 @@ export class NBBuild {
         }
         let buildPromises: Array<Promise<any>> = [];
         for(let schemaName of await this.save.getSchemaNames()) {
-            buildPromises.push(this.buildTemplate(schemaName));
+            await this.buildTemplate(schemaName);
         }
-        await Promise.all(buildPromises);
         console.log('copying dependencies');
         await this.copyDependencies();
         console.log('copying data');
@@ -73,7 +72,7 @@ export class NBBuild {
                 bindings.push({value: bind.value, property: bind.property, elemId: 'nb'+currentId});
             }
             //well if nothing's blown up yet
-            pageElements += `<div class="nbelement"><${pgElement.elementTag} id="${'nb'+(currentId++)}" /></div>\n`;
+            pageElements += `<div class="kangratelement"><${pgElement.elementTag} id="${'nb'+(currentId++)}" /></div>\n`;
             if(!builtIn) {
                 let element = elements.get(pgElement.elementTag);
                 if(element.importType == 'script') {
