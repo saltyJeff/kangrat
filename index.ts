@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 import {SaveFile} from './SaveFile';
-import {NBBuild} from './NBBuild';
+import {KangratBuild} from './KangratBuild';
 import {SafetyCheck} from './SafetyCheck';
 import * as FileTypes from './FileTypes';
 import * as path from 'path';
@@ -27,8 +27,8 @@ if(!program.to) {
 async function run (from: string, to: string, dangerous: boolean = false) {
 	let save: SaveFile = new SaveFile();
 	await save.readFrom(from);
-	let build: NBBuild = new NBBuild(save, to);
-	await build.buildAll(dangerous);
+	let build: KangratBuild = new KangratBuild(save, to);
+	await build.buildAll(!dangerous);
 };
 run(path.resolve(process.cwd(), program.from), path.resolve(process.cwd(), program.to), program.dangerous);
 

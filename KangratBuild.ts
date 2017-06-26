@@ -3,22 +3,22 @@ import {SaveFile} from './SaveFile';
 import * as fs from 'fs-promise';
 import {PageElement, Binding, ElementManifest, Field, recognizedTypes} from './FileTypes';
 import {SafetyCheck} from './SafetyCheck';
-import * as NBerrs from './ErrorTypes';
+import * as KangratErrs from './ErrorTypes';
+const colors = require('colors'); //weird lib thing
 interface BindingCommand {
     value: string;
     elemId: string;
     property: string;
 }
 //consts that get replaced (site cannot have these)
-const NODEBLOG_ROOT = '<!--KANGRAT_ROOT-->';
-const NODEBLOG_BINDINGS = '[/*KANGRAT_BINDINGS*/]';
-const NODEBLOG_IMPORT = '<!--KANGRAT_IMPORT-->';
-const divider = '-'.repeat(48);
-export class NBBuild {
+const KANGRAT_ROOT = '<!--KANGRAT_ROOT-->';
+const KANGRAT_BINDINGS = '[/*KANGRAT_BINDINGS*/]';
+const KANGRAT_IMPORT = '<!--KANGRAT_IMPORT-->';
+export class KangratBuild {
     private save: SaveFile;
     private outputDir: string;
     /**
-     * Creates new NBBuild instance
+     * Creates new KangratBuild instance
      * @param save the save file to read from
      * @param outputDir the directory to write to
      */
@@ -32,31 +32,28 @@ export class NBBuild {
      */
     public async buildAll(validate: boolean) {
         let startTime = Date.now();
-        console.log(divider);
-        console.log(`Building site: ${this.save.getMetadata().name} (v${this.save.getMetadata().version})\noutput: ${this.outputDir}`);
-        console.log(divider);
+        console.log(`Building site: ${this.save.getMetadata().name} (v${this.save.getMetadata().version})\noutput: ${this.outputDir}`.red);
         await fs.ensureDir(this.outputDir);
         if(validate) {
-            console.log('Running static checks on site');
+            console.log('Running static checks on site'.red);
             await new SafetyCheck(this.save).checkAll();
-            console.log('Everything checks out! (you deserve a pat on the back)');
-            console.log(divider);
+            console.log('Everything checks out! (you deserve a pat on the back)'.green);
         }
-        let buildPromises: Array<Promise<any>> = [];
+        let buildPromises: Promise<void>[] = [];
         for(let schemaName of await this.save.getSchemaNames()) {
             buildPromises.push(this.buildTemplate(schemaName));
         }
         await Promise.all(buildPromises);
-        console.log('copying dependencies');
+        console.log('copying dependencies'.cyan);
         await this.copyDependencies();
-        console.log('copying data');
+        console.log('dependencies copied'.green);
+        console.log('copying data'.cyan);
         await this.copyData();
-        console.log(divider);
-        console.log(`Build complete in ${(Date.now()-startTime)/1000} seconds`);
-        console.log(divider);
+        console.log('data copied'.green);
+        console.log(`Build complete in ${(Date.now()-startTime)/1000} seconds`.red);
     }
     private async buildTemplate (schemaName: string) {
-        console.log('building template: '+schemaName);
+        console.log(`building template: ${schemaName}`.cyan);
         //needed from save file
         let schema = await this.save.getSchema(schemaName);
         let elements = await this.save.getElementManifests();
@@ -70,10 +67,10 @@ export class NBBuild {
         for(let pgElement of template) {
             let builtIn = pgElement.elementTag.indexOf('-') == -1;
             for(let bind of pgElement.bindings) {
-                bindings.push({value: bind.value, property: bind.property, elemId: 'nb'+currentId});
+                bindings.push({value: bind.value, property: bind.property, elemId: 'kangrat'+currentId});
             }
             //well if nothing's blown up yet
-            pageElements += `<div class="nbelement"><${pgElement.elementTag} id="${'nb'+(currentId++)}" /></div>\n`;
+            pageElements += `<div class="kangratelement"><${pgElement.elementTag} id="${'kangrat'+(currentId++)}" /></div>\n`;
             if(!builtIn) {
                 let element = elements.get(pgElement.elementTag);
                 if(element.importType == 'script') {
@@ -84,12 +81,12 @@ export class NBBuild {
                 }
             }
         }
-        console.log('writing template to page');
+        console.log(`writing ${schemaName}.html`.green);
         await this.writePage(schemaName, pageElements, bindings, neededImports);
     }
     private async writePage(schema: string, pageElements: string, bindings: BindingCommand[], neededImports: string) {
         let originalText = await this.save.getBasePage();
-        originalText = originalText.replace(NODEBLOG_ROOT, pageElements).replace(NODEBLOG_BINDINGS, JSON.stringify(bindings)).replace(NODEBLOG_IMPORT, neededImports);
+        originalText = originalText.replace(KANGRAT_ROOT, pageElements).replace(KANGRAT_BINDINGS, JSON.stringify(bindings)).replace(KANGRAT_IMPORT, neededImports);
         await fs.ensureFile(path.resolve(this.outputDir, schema+'.html'));
         await fs.writeFile(path.resolve(this.outputDir, schema+'.html'), originalText, 'UTF-8');
     }

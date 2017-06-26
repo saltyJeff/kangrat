@@ -18,6 +18,8 @@ export interface ElementManifest {
     elementTag: string;
     href: string;
     importType: 'html' | 'script';
-    properties: any;
+    properties: {
+        [key: string]: string;
+    };
 }
 export declare const recognizedTypes: string[];

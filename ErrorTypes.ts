@@ -1,68 +1,68 @@
 import {recognizedTypes} from './FileTypes';
-export class NodeBlogTypeMismatch extends Error {
+export class KangratTypeMismatch extends Error {
     constructor (message: string) {
         super(message);
-        this.name = 'NodeBlogTypeMismatch';
+        this.name = 'KangratTypeMismatch';
     }
     public static create(from: string, to: string, schema: string, field: string, element: string, property: string) {
-        return new NodeBlogTypeMismatch(
+        return new KangratTypeMismatch(
             `Type mismatch: tried to put a ${from} type value in a ${to} type property
             @ from value: ${schema}.${field}
             to property: ${element}.${property}`);
     }
 }
-export class NodeBlogElementNotFound extends Error {
+export class KangratElementNotFound extends Error {
     constructor (message: string) {
         super(message);
-        this.name = 'NodeBlogElementNotFound';
+        this.name = 'KangratElementNotFound';
     }
     public static create(element: string, template: string) {
-        return new NodeBlogElementNotFound(
-            `Element not found: Element type ${element} is neither built in nor registered with a nodeblogmanifest.json
+        return new KangratElementNotFound(
+            `Element not found: Element type ${element} is neither built in nor registered with a Kangratmanifest.json
             @ template ${template}`);
     }
 }
-export class NodeBlogPropertyNotFound extends Error {
+export class KangratPropertyNotFound extends Error {
     constructor (message: string) {
         super(message);
-        this.name = 'NodeBlogPropertyNotFound';
+        this.name = 'KangratPropertyNotFound';
     }
     public static create(element: string, property: string, template: string) {
-        return new NodeBlogPropertyNotFound(
+        return new KangratPropertyNotFound(
             `Property not found: Element type: ${element} does not have property: ${property}
             @ template: ${template}`);
     }
 }
-export class NodeBlogValueNotFound extends Error {
+export class KangratValueNotFound extends Error {
     constructor (message: string) {
         super(message);
-        this.name = 'NodeBlogValueNotFound';
+        this.name = 'KangratValueNotFound';
     }
     public static create(schema: string, value: string, template: string) {
-        return new NodeBlogValueNotFound(
+        return new KangratValueNotFound(
             `Value not found: schema type: ${schema} does not have value: ${value}
             @ template: ${template}`);
     }
 }
-export class NodeBlogTypeNotRecognized extends Error {
+export class KangratTypeNotRecognized extends Error {
     constructor (message: string) {
         super(message);
-        this.name = 'NodeBlogTypeNotRecognized';
+        this.name = 'KangratTypeNotRecognized';
     }
     public static create(type: string, schema: string, value: string, template: string) {
-        return new NodeBlogTypeNotRecognized(
+        return new KangratTypeNotRecognized(
             `Type not recognized: schema type: ${schema} has an unrecognized field type: ${type}
             @ value: ${value} in template: ${template}
             should be one of ${recognizedTypes}, or if it is an array it should be one of those types surrounded with [ and ]`);
     }
 }
-export class NodeBlogIndexTypeError extends Error {
+export class KangratIndexTypeError extends Error {
     constructor (message: string) {
         super(message);
-        this.name = 'NodeBlogIndexTypeError';
+        this.name = 'KangratIndexTypeError';
     }
     public static create(schema: string, value: string, type: string) {
-        return new NodeBlogIndexTypeError(
+        return new KangratIndexTypeError(
             `Index cannot be generated from value: schema ${schema} has impossible type: ${type}
             @ value name: ${value}
             should be one of [Number, Date]`);

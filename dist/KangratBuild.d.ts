@@ -1,5 +1,5 @@
 import { SaveFile } from './SaveFile';
-export declare class NBBuild {
+export declare class KangratBuild {
     private save;
     private outputDir;
     constructor(save: SaveFile, outputDir: string);

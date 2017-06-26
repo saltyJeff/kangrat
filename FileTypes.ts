@@ -18,7 +18,9 @@ export interface ElementManifest {
     elementTag: string,
     href: string,
     importType: 'html' | 'script',
-    properties: any
+    properties: {
+        [key: string]: string;
+    }
 }
 export const recognizedTypes = [
     'string',

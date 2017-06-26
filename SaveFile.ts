@@ -114,7 +114,7 @@ export class SaveFile {
 			if(!stat.isDirectory()) {
 				continue;
 			}
-			let fileHref = path.resolve(thisPath, 'nodeblogmanifest.json');
+			let fileHref = path.resolve(thisPath, 'kangratmanifest.json');
 			if(await fs.exists(fileHref)) {
 				let file = await fs.readFile(fileHref, 'UTF-8');
 				let manifest = SaveFile.parseManifest(JSON.parse(file));					
@@ -125,7 +125,7 @@ export class SaveFile {
 		return this.elementManifests;
 	}
 	/**
-	 * Gets the associated base page, or if none is found the ugly default one
+	 * Gets the associated base page, or if none is found use the ugly default one
 	 */
 	public async getBasePage() {
 		if(this.basePage != null) {

@@ -1,0 +1,8 @@
+{
+    "elementTag": "google-youtube",
+    "href": "./google-youtube.html",
+    "importType": "html",
+    "properties": {
+        "videoId": "string"
+    }
+}

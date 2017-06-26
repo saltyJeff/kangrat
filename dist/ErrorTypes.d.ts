@@ -1,24 +1,24 @@
-export declare class NodeBlogTypeMismatch extends Error {
+export declare class KangratTypeMismatch extends Error {
     constructor(message: string);
-    static create(from: string, to: string, schema: string, field: string, element: string, property: string): NodeBlogTypeMismatch;
+    static create(from: string, to: string, schema: string, field: string, element: string, property: string): KangratTypeMismatch;
 }
-export declare class NodeBlogElementNotFound extends Error {
+export declare class KangratElementNotFound extends Error {
     constructor(message: string);
-    static create(element: string, template: string): NodeBlogElementNotFound;
+    static create(element: string, template: string): KangratElementNotFound;
 }
-export declare class NodeBlogPropertyNotFound extends Error {
+export declare class KangratPropertyNotFound extends Error {
     constructor(message: string);
-    static create(element: string, property: string, template: string): NodeBlogPropertyNotFound;
+    static create(element: string, property: string, template: string): KangratPropertyNotFound;
 }
-export declare class NodeBlogValueNotFound extends Error {
+export declare class KangratValueNotFound extends Error {
     constructor(message: string);
-    static create(schema: string, value: string, template: string): NodeBlogValueNotFound;
+    static create(schema: string, value: string, template: string): KangratValueNotFound;
 }
-export declare class NodeBlogTypeNotRecognized extends Error {
+export declare class KangratTypeNotRecognized extends Error {
     constructor(message: string);
-    static create(type: string, schema: string, value: string, template: string): NodeBlogTypeNotRecognized;
+    static create(type: string, schema: string, value: string, template: string): KangratTypeNotRecognized;
 }
-export declare class NodeBlogIndexTypeError extends Error {
+export declare class KangratIndexTypeError extends Error {
     constructor(message: string);
-    static create(schema: string, value: string, type: string): NodeBlogIndexTypeError;
+    static create(schema: string, value: string, type: string): KangratIndexTypeError;
 }
