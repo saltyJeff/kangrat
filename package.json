@@ -2,7 +2,7 @@
   "name": "kangrat",
   "version": "1.1.0",
   "description": "A small and fast static site generator for nodejs",
-  "main": "dist/run.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "kangrat -f test-projects/Sample -t test-projects/SampleBuild"
   },
