@@ -41,7 +41,7 @@ export class KangratBuild {
         }
         let buildPromises: Promise<void>[] = [];
         for(let schemaName of await this.save.getSchemaNames()) {
-            buildPromises.push(this.buildTemplate(schemaName));
+            await this.buildTemplate(schemaName);
         }
         await Promise.all(buildPromises);
         console.log('copying dependencies'.cyan);
