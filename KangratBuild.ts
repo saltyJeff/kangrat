@@ -1,6 +1,6 @@
 import *  as path from 'path';
 import {SaveFile} from './SaveFile';
-import * as fs from 'fs-promise';
+import * as fs from 'fs-extra';
 import {PageElement, Binding, ElementManifest, Field, recognizedTypes} from './FileTypes';
 import {SafetyCheck} from './SafetyCheck';
 import * as KangratErrs from './ErrorTypes';

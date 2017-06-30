@@ -11,7 +11,7 @@
     "inlineSourceMap": true,
     "inlineSources": true
   },
-  "files": [
-    "index.ts"
+  "include": [
+    "./*.ts"
   ]
 }

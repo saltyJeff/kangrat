@@ -1,4 +1,4 @@
-import * as fs from 'fs-promise';
+import * as fs from 'fs-extra';
 import * as path from 'path';
 import {MetaData, Field, PageElement, Binding, ElementManifest} from './FileTypes';
 export class SaveFile {
