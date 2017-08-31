@@ -1,17 +1,18 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "outDir": "dist",
-    "module": "commonjs",
-    "declaration": true,
-    "noImplicitAny": true,
-    "strictNullChecks": false,
-    "removeComments": true,
-    "moduleResolution": "node",
-    "inlineSourceMap": true,
-    "inlineSources": true
-  },
-  "include": [
-    "./*.ts"
-  ]
+    "compilerOptions": {
+        "module": "commonjs",
+        "removeComments": true,
+		"preserveConstEnums": true,
+		"outDir": "./dist/js",
+		"sourceMap": true,
+        "jsx": "react",
+        "target": "es6",
+        "experimentalDecorators": true
+    },
+    "include": [
+        "./src/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }

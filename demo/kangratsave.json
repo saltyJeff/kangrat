@@ -1,0 +1,26 @@
+{
+	"siteName": "My Kangrat Demo",
+	"author": "saltyJeff",
+	"basePage": "./basepage.html",
+	"pages": {
+		"blog": {
+			"schema":{
+				"title": "string"
+			},
+			"template": [
+				{
+					"elementTag": "input",
+					"propertyBindings": {
+						"title": "value"
+					}
+				}
+			]
+		}
+	},
+	"elements": {
+		"google-youtube": {
+			"bowerPackage": "GoogleWebComponents/google-youtube",
+			"elementPath": "google-youtube/google-youtube.html"
+		}
+	}
+}

@@ -1,0 +1,159 @@
+import {Kangrat, TemplateElement, Schema, BowerElement} from './kangratschema';
+import * as fs from 'fs-extra';
+import * as winston from 'winston';
+import * as path from 'path';
+import * as bower from 'bower';
+//the replacables
+const IMPORTS = `<!--KANGRAT-IMPORTS-->`;
+const BINDINGS = `[/*KANGRAT-BINDINGS*/]`;
+const ROOT = `<!--KANGRAT-ROOT-->`;
+const ID = `kangratId`;
+/**
+ * Builds a kangrat site
+ * @param pageSchema the schema of the kangratsave.json
+ * @param outDir the directory to output to
+ * @param installDeps whether or not to use bower to install dependencies
+ */
+export default async function build (pageSchema: Kangrat, outDir: string, installDeps:boolean = true) {
+	winston.debug(`ensuring ${outDir} exists`);
+	fs.ensureDirSync(outDir);
+	//read the basePage
+	winston.debug(`ensuring basepage ${pageSchema.basePage} exists`);
+	let basePage: string;
+	if(fs.existsSync(pageSchema.basePage)) {
+		basePage = fs.readFileSync(pageSchema.basePage, 'UTF-8');
+	}
+	else {
+		winston.error(`base page @ ${pageSchema.basePage} not found`);
+		throw new Error(`base page @ ${pageSchema.basePage} not found`);
+	}
+	//check if files exist
+	for(let pageName in pageSchema.pages) {
+		winston.info(`Page creation of ${pageName.toLocaleUpperCase()} has begun`);
+		if(!pageSchema.pages.hasOwnProperty(pageName)) continue;
+		winston.debug(`creating html file for ${pageName}`);
+		const filePath = path.resolve(outDir, pageName+'.html')
+		fs.ensureFileSync(filePath);
+		let elemsAndBindings = getBindingsAndElements(pageSchema, pageName);
+		let pageText = basePage //trolling the garbage collector
+			.replace(IMPORTS, getImportString(pageSchema, pageName))
+			.replace(BINDINGS, elemsAndBindings.bindings)
+			.replace(ROOT, elemsAndBindings.elements);
+		winston.debug(`writing page text to file ${filePath}`);
+		fs.writeFileSync(filePath, pageText, "UTF-8");
+		winston.info(`Page creation of ${pageName.toLocaleUpperCase()} has completed`);
+	}
+	//install dependencies if needed
+	if(installDeps) {
+		await installBowerDeps(pageSchema, outDir);
+	}
+}
+function getImportString (pageSchema: Kangrat, pageName: string) {
+	let importStr: string = "";
+	let imported: {
+		[key: string]: boolean
+	} = {};
+	let templateElems = pageSchema.pages[pageName].template;
+	for(let templateElement of templateElems) {
+		if(!imported[templateElement.elementTag]) {
+			imported[templateElement.elementTag] = true;
+			if(!!pageSchema.elements[templateElement.elementTag]) {
+				importStr +=
+				`<link rel="import" href="${'bower_components/'+pageSchema.elements[templateElement.elementTag].elementPath}">
+				`
+			}
+		}
+	}
+	winston.debug(
+`import string for ${pageName} set to:
+${importStr}`);
+	return importStr;
+}
+function getBindingsAndElements (pageSchema: Kangrat, pageName: string): {bindings: string; elements: string;} {
+	let toReturn = {
+		bindings: "",
+		elements: ""
+	};
+	let bindings: {
+		id: string;
+		field: string;
+		property: string;
+	}[] = [];
+	let templateElems = pageSchema.pages[pageName].template;
+	for(let i = 0; i < templateElems.length; i++) {
+		let templateElem = templateElems[i];
+		let id = ID+i;
+		toReturn.elements +=
+		`<${templateElem.elementTag} id="${id}" />
+		`;
+		for(let fieldName in templateElem.propertyBindings) {
+			if(!templateElem.propertyBindings.hasOwnProperty(fieldName)) continue;
+			bindings.push({
+				id: id,
+				field: fieldName,
+				property: templateElem.propertyBindings[fieldName]
+			});
+		}
+	}
+	winston.debug(
+`element string for ${pageName} set to:
+${toReturn.elements}`
+	);
+	toReturn.bindings = JSON.stringify(bindings);
+	winston.debug(
+`binding string for ${pageName} set to:
+${toReturn.bindings}`
+	);
+	return toReturn;
+}
+//y u no definitions bower?
+async function installBowerDeps(pageSchema: Kangrat, outDir: string) {
+	winston.info('installing bower dependencies');
+	let elements = pageSchema.elements;
+	let bowerPkgs = [];
+	for(let elem in elements) {
+		if(!elements.hasOwnProperty(elem)) continue;
+		if(bowerPkgs.indexOf(elements[elem].bowerPackage) == -1) {
+			bowerPkgs.push(elements[elem].bowerPackage);
+		}
+	}
+	if(bowerPkgs.length == 0) {
+		winston.info(`there wasn't any deps to install!`);
+		return;
+	}
+	winston.debug(
+`bower dependencies to install:
+${JSON.stringify(bowerPkgs)}`
+	);
+	//create a default bowerfile.json
+	if(!fs.existsSync(path.resolve(outDir, 'bower.json'))) {
+		fs.writeFileSync(path.resolve(outDir, 'bower.json'), createDefaultBower(pageSchema), 'UTF-8');
+	}
+	await new Promise((res, rej) => {bower
+		.commands
+		.install(bowerPkgs, {save: true}, {
+			directory: path.resolve(outDir, 'bower_components')
+		})
+		.on('log', (log) => {
+			winston.debug(log);
+		})
+		.on('error', (err) => {
+			winston.error(err);
+			res();
+		})
+		.on('end', (installed) => {
+			winston.info('bower dependencies installed');
+			winston.debug(installed);
+			res();
+		});
+	});
+}
+function createDefaultBower(pageSchema: Kangrat) {
+return (
+`{
+	"name": "${pageSchema.siteName}",
+	"description": "Autogenerated by kangrat for ${pageSchema.siteName}",
+	"private": true
+}
+`)
+}
