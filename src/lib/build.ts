@@ -1,4 +1,4 @@
-import {Kangrat, TemplateElement, Schema, BowerElement} from './kangratschema';
+import {Kangrat, TemplateElement, Schema, BowerElement} from '../kangratschema';
 import * as fs from 'fs-extra';
 import * as winston from 'winston';
 import * as path from 'path';
@@ -18,14 +18,15 @@ export default async function build (pageSchema: Kangrat, outDir: string, instal
 	winston.debug(`ensuring ${outDir} exists`);
 	fs.ensureDirSync(outDir);
 	//read the basePage
-	winston.debug(`ensuring basepage ${pageSchema.basePage} exists`);
+	let bpPath = path.resolve(outDir, pageSchema.basePage);
+	winston.debug(`ensuring basepage ${bpPath} exists`);
 	let basePage: string;
-	if(fs.existsSync(pageSchema.basePage)) {
-		basePage = fs.readFileSync(pageSchema.basePage, 'UTF-8');
+	if(fs.existsSync(bpPath)) {
+		basePage = fs.readFileSync(bpPath, 'UTF-8');
 	}
 	else {
-		winston.error(`base page @ ${pageSchema.basePage} not found`);
-		throw new Error(`base page @ ${pageSchema.basePage} not found`);
+		winston.error(`base page @ ${bpPath} not found`);
+		throw new Error(`base page @ ${bpPath} not found`);
 	}
 	//check if files exist
 	for(let pageName in pageSchema.pages) {
@@ -129,9 +130,10 @@ ${JSON.stringify(bowerPkgs)}`
 	if(!fs.existsSync(path.resolve(outDir, 'bower.json'))) {
 		fs.writeFileSync(path.resolve(outDir, 'bower.json'), createDefaultBower(pageSchema), 'UTF-8');
 	}
-	await new Promise((res, rej) => {bower
+	await new Promise((res, rej) => { bower
 		.commands
 		.install(bowerPkgs, {save: true}, {
+			cwd: outDir,
 			directory: path.resolve(outDir, 'bower_components')
 		})
 		.on('log', (log) => {

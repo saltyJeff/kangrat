@@ -11,19 +11,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const program = require("commander");
 const path = require("path");
-const build_1 = require("./build");
+const build_1 = require("./lib/build");
 const fs = require("fs-extra");
 const jsonschema_1 = require("jsonschema");
 const winston = require("winston");
 require('source-map-support').install();
 program
     .version('1.0.0')
-    .option('-i, --input <input>', 'the path where the savefile is located')
+    .option('-d, --dir <directory>', 'the path to the folder where the savefile is located')
     .option('-l, --loglevel <loglevel>', 'the log level to print to screen')
     .parse(process.argv);
 let startTime = Date.now();
-if (!program.input) {
-    program.input = path.resolve(process.cwd(), 'kangratsave.json');
+if (!program.dir) {
+    program.dir = process.cwd();
 }
 winston.configure({
     level: program.loglevel,
@@ -32,14 +32,15 @@ winston.configure({
     ]
 });
 (() => __awaiter(this, void 0, void 0, function* () {
-    winston.info(`Beginning kangrat build process @ ${program.input}`);
-    if (!fs.existsSync(program.input)) {
-        console.error(`No such file found @ ${program.input}`);
+    winston.info(`Beginning kangrat build process @ ${program.dir}`);
+    let saveFile = path.resolve(program.dir, 'kangratsave.json');
+    if (!fs.existsSync(saveFile)) {
+        console.error(`No such file found @ ${saveFile}`);
         process.exit(1);
     }
-    let save = jsonschema_1.validate(require(program.input), require(path.resolve(__dirname, '../../kangratschema.json')));
+    let save = jsonschema_1.validate(require(saveFile), require(path.resolve(__dirname, '../../kangratschema.json')));
     if (save.valid) {
-        yield build_1.default(save.instance, path.dirname(program.input));
+        yield build_1.default(save.instance, program.dir);
         winston.info(`Build complete in ${(Date.now() - startTime) / 1000} sec`);
     }
     else {
@@ -47,7 +48,7 @@ winston.configure({
         save.errors.forEach((val) => {
             errs += val + '\n';
         });
-        winston.error(`The save file @ ${program.input} is invalid
+        winston.error(`The save file @ ${saveFile} is invalid
 	-------------------------------------------
 	Errors:
 	${errs}`);

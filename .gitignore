@@ -57,5 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
-#vscode stuff
+# vscode stuff
 .vscode
+
+# where i randomly test stuff
+scratch
