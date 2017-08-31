@@ -11,7 +11,9 @@ then run `kangrat --help` for help.
 (in vscode just add a "$schema" in your json and set it to the kangratschema.json file's URL)
 
 ## Example project:
-Look in the repository's /demo/kangratsave.json for a sample save file
+Look in the repository's demo/simplepage/kangratsave.json for a sample page directory file
+
+To see a full site, `cd` into demo/simpleplage and run `kangrat`. Then go to blog.html and append the query string `?page=data/demo.json`
 ### Credits
 The basepage.html pulls from the [nanoajax library](https://github.com/yanatan16/nanoajax)
 
